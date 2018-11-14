@@ -13,46 +13,20 @@ Domain Path:  /languages
 */
 
 require_once dirname( __FILE__ ) . '/inc/LoremIpsum.php';
+require_once dirname( __FILE__ ) . '/inc/shortcode.php';
+require_once dirname( __FILE__ ) . '/inc/options.php';
 
-
-// Add Shortcode
-function lipsumator_func( $atts ) {
-
-	// Attributes
-	$atts = shortcode_atts(
-		array(
-			'type' => 's',
-			'count' => '1',
-            'tag' => 'p',
-		),
-		$atts
-    );
-
-    $lipsum = new joshtronic\LoremIpsum();
-
-    switch ($atts['type']) {
-        case 'p':
-            $output = $lipsum->paragraphs($atts['count'], $atts['tag']);
-            break;
-        case 's':
-            $output = $lipsum->sentences($atts['count'], $atts['tag']);
-            break;
-        case 'w':
-            $output = $lipsum->words($atts['count']);
-            $output = '<' . $atts['tag'] . '>' . $output . '</' . $atts['tag'] . '>';
-            break;
-        default:
-            $output = sprintf('<pre>Error! "' . $atts['type'] . '" ' . __('is not a valid type. Use "p","s" or "w".', 'lipsumator') . '</pre>');
-            break;
+/**
+ * Enqueue the highlight stylesheet if the lipsum shortcode is being used and highlighting is turned on.
+ */
+function wpdocs_shortcode_scripts() {
+    global $post;
+    $plugin_url = plugin_dir_url( __FILE__ );
+    $options = get_option('lipsumator_options');
+    if ( isset($options['highlight']) && has_shortcode( $post->post_content, 'lipsum') ) {
+        wp_enqueue_style( 'lipsumator', $plugin_url . 'css/highlight.css' );
     }
-
-    $output = ucfirst($output);
-
-    return wpautop($output);
-    
-    
-
 }
-add_shortcode( 'lipsum', 'lipsumator_func' );
+add_action( 'wp_enqueue_scripts', 'wpdocs_shortcode_scripts');
 
 
