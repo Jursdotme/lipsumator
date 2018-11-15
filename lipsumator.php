@@ -29,4 +29,24 @@ function wpdocs_shortcode_scripts() {
 }
 add_action( 'wp_enqueue_scripts', 'wpdocs_shortcode_scripts');
 
+// Add settings link to plugin page
+add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), 'add_action_links' );
 
+function add_action_links ( $links ) {
+ $mylinks = array(
+ '<a href="' . admin_url( 'tools.php?page=lipsumator' ) . '">Settings</a>',
+ );
+return array_merge( $links, $mylinks );
+}
+
+/**
+ * Load settings page Styling
+ */
+function load_lipsumator_wp_admin_style($hook) {
+    // Load only on ?page=mypluginname
+    if($hook != 'tools_page_lipsumator') {
+            return;
+    }
+    wp_enqueue_style( 'lipsumator_settings_page_css', plugin_dir_url( __FILE__ ) . 'css/settings-page.css' );
+}
+add_action( 'admin_enqueue_scripts', 'load_lipsumator_wp_admin_style' );

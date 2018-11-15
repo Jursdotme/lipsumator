@@ -64,7 +64,8 @@ function lipsumator_section_guide_cb($args)
     ?>
  <div id="<?php echo esc_attr($args['id']); ?>">
  <p><?php esc_html_e('Lipsumator makes it easy to mock up page layouts with temporary text. When it is time to insert the final content you can turn on the "Highlight mode" to easily make sure you dont leave any placeholder text when the site goes live.', 'lipsumator'); ?></p>
-	<h3><?php esc_html_e('Syntax', 'lipsumator'); ?></h3>
+ <hr/>   
+ <h3><?php esc_html_e('Syntax', 'lipsumator'); ?></h3>
 	<p><?php esc_html_e('Example:', 'lipsumator'); ?></p>
 <pre>
 <code>[lipsumator type=&quot;s&quot; count=&quot;1&quot; tag=&quot;h1&quot;]</code>
@@ -83,7 +84,8 @@ function lipsumator_section_guide_cb($args)
 
 	<h4><?php esc_html_e('Tag', 'lipsumator'); ?></h4>
 	<p><?php esc_html_e('Tag defines the type of element tag you want to wrap your generated placeholder content in. Words and sentences are wrapt into a single tag. Paragraphs are wrapt individually.', 'lipsumator'); ?></p>
- </div>
+    <hr/> 
+</div>
  <?php
 }
 
@@ -171,3 +173,4 @@ function lipsumator_options_page_html()
  </div>
  <?php
 }
+
