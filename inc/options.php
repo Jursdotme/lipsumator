@@ -11,23 +11,31 @@ function lipsumator_settings_init()
 {
     // register a new setting for "lipsumator" page
     register_setting('lipsumator', 'lipsumator_options');
- 
+    
     // register a new section in the "lipsumator" page
     add_settings_section(
-        'lipsumator_section_developers',
-        __('Lorem Ipsum generator shortcode.', 'lipsumator'),
-        'lipsumator_section_developers_cb',
+        'lipsumator_section_guide',
+        __('Guide', 'lipsumator'),
+        'lipsumator_section_guide_cb',
+        'lipsumator'
+    );
+
+    // register a new section in the "lipsumator" page
+    add_settings_section(
+        'lipsumator_section_settings',
+        __('Settings.', 'lipsumator'),
+        'lipsumator_section_settings_cb',
         'lipsumator'
     );
  
-    // register a new field in the "lipsumator_section_developers" section, inside the "lipsumator" page
+    // register a new field in the "lipsumator_section_settings" section, inside the "lipsumator" page
     add_settings_field(
         'lipsumator_field_pill', // as of WP 4.6 this value is used only internally
         // use $args' label_for to populate the id inside the callback
         __('Highlight', 'lipsumator'),
         'lipsumator_field_pill_cb',
         'lipsumator',
-        'lipsumator_section_developers',
+        'lipsumator_section_settings',
         [
             'label_for' => 'lipsumator_field_pill',
             'class' => 'lipsumator_row',
@@ -51,10 +59,38 @@ add_action('admin_init', 'lipsumator_settings_init');
 // section callbacks can accept an $args parameter, which is an array.
 // $args have the following keys defined: title, id, callback.
 // the values are defined at the add_settings_section() function.
-function lipsumator_section_developers_cb($args)
+function lipsumator_section_guide_cb($args)
 {
     ?>
- <p id="<?php echo esc_attr($args['id']); ?>"><?php esc_html_e('Settings.', 'lipsumator'); ?></p>
+ <div id="<?php echo esc_attr($args['id']); ?>">
+ <p><?php esc_html_e('Lipsumator makes it easy to mock up page layouts with temporary text. When it is time to insert the final content you can turn on the "Highlight mode" to easily make sure you dont leave any placeholder text when the site goes live.', 'lipsumator'); ?></p>
+	<h3><?php esc_html_e('Syntax', 'lipsumator'); ?></h3>
+	<p><?php esc_html_e('Example:', 'lipsumator'); ?></p>
+<pre>
+<code>[lipsumator type=&quot;s&quot; count=&quot;1&quot; tag=&quot;h1&quot;]</code>
+</pre>
+
+	<h4><?php esc_html_e('Type', 'lipsumator'); ?></h4>
+	<p><?php esc_html_e('This is defining the type of placeholder content you want to generate. It accepts one of 3 arguments:', 'lipsumator'); ?></p>
+	<ul>
+		<li><code><?php esc_html_e('w', 'lipsumator'); ?></code>: <?php esc_html_e('Generate single words.', 'lipsumator'); ?></li>
+		<li><code><?php esc_html_e('s', 'lipsumator'); ?></code>: <?php esc_html_e('Generate sentences.', 'lipsumator'); ?></li>
+		<li><code><?php esc_html_e('p', 'lipsumator'); ?></code>: <?php esc_html_e('Generate paragraphs.', 'lipsumator'); ?></li>
+	</ul>
+
+	<h4><?php esc_html_e('Count', 'lipsumator'); ?></h4>
+	<p><?php esc_html_e('The count argument indicates the number of words, sentences or paragraphs you generate, based on the type argument.', 'lipsumator'); ?></p>
+
+	<h4><?php esc_html_e('Tag', 'lipsumator'); ?></h4>
+	<p><?php esc_html_e('Tag defines the type of element tag you want to wrap your generated placeholder content in. Words and sentences are wrapt into a single tag. Paragraphs are wrapt individually.', 'lipsumator'); ?></p>
+ </div>
+ <?php
+}
+
+function lipsumator_section_settings_cb($args)
+{
+    ?>
+ <p id="<?php echo esc_attr($args['id']); ?>"><?php //esc_html_e('Settings.', 'lipsumator'); ?></p>
  <?php
 }
  
