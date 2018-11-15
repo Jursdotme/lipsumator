@@ -45,4 +45,4 @@ function lipsumator_func($atts)
 
     
 }
-add_shortcode('lipsum', 'lipsumator_func');
+add_shortcode('lipsumator', 'lipsumator_func');
