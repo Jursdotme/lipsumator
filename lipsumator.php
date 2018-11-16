@@ -3,7 +3,7 @@
 Plugin Name:  Lipsumator
 Plugin URI:   https://norsemedia.dk/plugins/lipsumator/
 Description:  Lorem ipsum shortcode
-Version:      0.0.1
+Version:      0.0.2
 Author:       Norse Media
 Author URI:   https://norsemedia.dk/
 License:      GPL2
