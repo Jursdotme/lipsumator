@@ -168,7 +168,7 @@ class LoremIpsum
     {
         $sentences = array();
         for ($i = 0; $i < $count; $i++) {
-            $sentences[] = $this->wordsArray($this->gauss(16, 6.08));
+            $sentences[] = $this->wordsArray($this->gauss(24.46, 5.08));
         }
         $this->punctuate($sentences);
         return $this->output($sentences, $tags, $array);
@@ -215,7 +215,7 @@ class LoremIpsum
     {
         $paragraphs = array();
         for ($i = 0; $i < $count; $i++) {
-            $paragraphs[] = $this->sentences($this->gauss(3.8, 1.5));
+            $paragraphs[] = $this->sentences($this->gauss(5.8, 1.93));
         }
         return $this->output($paragraphs, $tags, $array, "\n\n");
     }
@@ -249,7 +249,15 @@ class LoremIpsum
      */
     private function shuffle()
     {
-        shuffle($this->words);
+        if ($this->first) {
+            $this->first = array_slice($this->words, 0, 8);
+            $this->words = array_slice($this->words, 8);
+            shuffle($this->words);
+            $this->words = $this->first + $this->words;
+            $this->first = false;
+        } else {
+            shuffle($this->words);
+        }
     }
     /**
      * Punctuate

@@ -30,20 +30,18 @@ function lipsumator_settings_init()
  
     // register a new field in the "lipsumator_section_settings" section, inside the "lipsumator" page
     add_settings_field(
-        'lipsumator_highlight_checkbox', // as of WP 4.6 this value is used only internally
+        'lipsumator_field_pill', // as of WP 4.6 this value is used only internally
         // use $args' label_for to populate the id inside the callback
-        __('Active Highlighting', 'lipsumator'),
-        'lipsumator_highlight_checkbox_cb',
+        __('Highlight', 'lipsumator'),
+        'lipsumator_field_pill_cb',
         'lipsumator',
         'lipsumator_section_settings',
         [
-            'label_for' => 'lipsumator_highlight_checkbox',
+            'label_for' => 'lipsumator_field_pill',
             'class' => 'lipsumator_row',
             'lipsumator_custom_data' => 'custom',
         ]
     );
-
-
 }
  
 /**
@@ -64,61 +62,38 @@ add_action('admin_init', 'lipsumator_settings_init');
 function lipsumator_section_guide_cb($args)
 {
     ?>
-<div id="<?php echo esc_attr($args['id']); ?>">
-  <p>
-    <?php esc_html_e('Lipsumator makes it easy to mock up page layouts with temporary text. When it is time to insert the final content you can turn on the "Highlight mode" to easily make sure you dont leave any placeholder text when the site goes live.', 'lipsumator'); ?>
-  </p>
-  <hr />
-  <h3>
-    <?php esc_html_e('Syntax', 'lipsumator'); ?>
-  </h3>
-  <p>
-    <?php esc_html_e('Example:', 'lipsumator'); ?>
-  </p>
-  <pre>
-<code>[lipsumator w=3 t=h1]</code>
+ <div id="<?php echo esc_attr($args['id']); ?>">
+ <p><?php esc_html_e('Lipsumator makes it easy to mock up page layouts with temporary text. When it is time to insert the final content you can turn on the "Highlight mode" to easily make sure you dont leave any placeholder text when the site goes live.', 'lipsumator'); ?></p>
+ <hr/>   
+ <h3><?php esc_html_e('Syntax', 'lipsumator'); ?></h3>
+	<p><?php esc_html_e('Example:', 'lipsumator'); ?></p>
+<pre>
+<code>[lipsumator type=&quot;s&quot; count=&quot;1&quot; tag=&quot;h1&quot;]</code>
 </pre>
 
-  <h4>
-    <?php esc_html_e('Type', 'lipsumator'); ?>
-  </h4>
-  <p>
-    <?php esc_html_e('Use "w", "s" and "p" to define the type of content you want to generate. Whatever number you specify dictates the amount of words, sentences etc. you generate.', 'lipsumator'); ?>
-  </p>
-  <ul>
-    <li><code>
-        <?php esc_html_e('w', 'lipsumator'); ?></code>:
-      <?php esc_html_e('Generates words.', 'lipsumator'); ?>
-    </li>
-    <li><code>
-        <?php esc_html_e('s', 'lipsumator'); ?></code>:
-      <?php esc_html_e('Generates sentences.', 'lipsumator'); ?>
-    </li>
-    <li><code>
-        <?php esc_html_e('p', 'lipsumator'); ?></code>:
-      <?php esc_html_e('Generates paragraphs.', 'lipsumator'); ?>
-    </li>
-  </ul>
+	<h4><?php esc_html_e('Type', 'lipsumator'); ?></h4>
+	<p><?php esc_html_e('This is defining the type of placeholder content you want to generate. It accepts one of 3 arguments:', 'lipsumator'); ?></p>
+	<ul>
+		<li><code><?php esc_html_e('w', 'lipsumator'); ?></code>: <?php esc_html_e('Generate single words.', 'lipsumator'); ?></li>
+		<li><code><?php esc_html_e('s', 'lipsumator'); ?></code>: <?php esc_html_e('Generate sentences.', 'lipsumator'); ?></li>
+		<li><code><?php esc_html_e('p', 'lipsumator'); ?></code>: <?php esc_html_e('Generate paragraphs.', 'lipsumator'); ?></li>
+	</ul>
 
-  <h4>
-    <?php esc_html_e('Tag', 'lipsumator'); ?> <code>
-      <?php esc_html_e('t', 'lipsumator'); ?></code>:
-  </h4>
-  <p>
-    <?php esc_html_e('Tag is defined as "t" and defines the type of element tag you want to wrap your generated placeholder content in. Words and sentences are wrapt into a single tag. Paragraphs are wrapt individually. If you dont define anything, the generated content will not be wrapped at all.', 'lipsumator'); ?>
-  </p>
-  <hr />
+	<h4><?php esc_html_e('Count', 'lipsumator'); ?></h4>
+	<p><?php esc_html_e('The count argument indicates the number of words, sentences or paragraphs you generate, based on the type argument.', 'lipsumator'); ?></p>
+
+	<h4><?php esc_html_e('Tag', 'lipsumator'); ?></h4>
+	<p><?php esc_html_e('Tag defines the type of element tag you want to wrap your generated placeholder content in. Words and sentences are wrapt into a single tag. Paragraphs are wrapt individually.', 'lipsumator'); ?></p>
+    <hr/> 
 </div>
-<?php
+ <?php
 }
 
 function lipsumator_section_settings_cb($args)
 {
     ?>
-<p id="<?php echo esc_attr($args['id']); ?>">
-  <?php //esc_html_e('Settings.', 'lipsumator'); ?>
-</p>
-<?php
+ <p id="<?php echo esc_attr($args['id']); ?>"><?php //esc_html_e('Settings.', 'lipsumator'); ?></p>
+ <?php
 }
  
 // pill field cb
@@ -129,25 +104,17 @@ function lipsumator_section_settings_cb($args)
 // the "label_for" key value is used for the "for" attribute of the <label>.
 // the "class" key value is used for the "class" attribute of the <tr> containing the field.
 // you can add custom key value pairs to be used inside your callbacks.
-function lipsumator_highlight_checkbox_cb($args)
+function lipsumator_field_pill_cb($args)
 {
     // get the value of the setting we've registered with register_setting()
     $options = get_option('lipsumator_options');
     // output the field ?>
-<input type="checkbox"
-       name="lipsumator_options[highlight]"
-       value="1"
-       <?php
-       checked(
-       1==$options['highlight']
-       );
-       ?> />
-<p class="description">
-  <?php esc_html_e('Highlights all Lorem ipsum text. This is usefull when changing the placeholder text for the final content. The highlighting makes it less likely that you will miss something.', 'lipsumator'); ?>
-</p>
-<?php
+    <input type="checkbox" name="lipsumator_options[highlight]" value="1"<?php checked( 1 == $options['highlight'] ); ?> />
+    <p class="description">
+    <?php esc_html_e('Highlights all Lorem ipsum text. This is usefull when changing the placeholder text for the final content. The highlighting makes it less likely that you will miss something.', 'lipsumator'); ?>
+    </p>
+ <?php
 }
-
  
 /**
  * Management level menu
@@ -191,13 +158,10 @@ function lipsumator_options_page_html()
  
     // show error/update messages
  settings_errors('lipsumator_messages'); ?>
-<div class="wrap">
-  <h1>
-    <?php echo esc_html(get_admin_page_title()); ?>
-  </h1>
-  <form action="options.php"
-        method="post">
-    <?php
+ <div class="wrap">
+ <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
+ <form action="options.php" method="post">
+ <?php
  // output security fields for the registered setting "lipsumator"
  settings_fields('lipsumator');
     // output setting sections and their fields
@@ -205,7 +169,8 @@ function lipsumator_options_page_html()
     do_settings_sections('lipsumator');
     // output save settings button
     submit_button('Save Settings'); ?>
-  </form>
-</div>
-<?php
+ </form>
+ </div>
+ <?php
 }
+

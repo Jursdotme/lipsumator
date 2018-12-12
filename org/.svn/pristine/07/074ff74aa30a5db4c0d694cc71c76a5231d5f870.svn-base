@@ -3,7 +3,7 @@
 Plugin Name:  Lipsumator
 Plugin URI:   https://norsemedia.dk/plugins/lipsumator/
 Description:  Lorem ipsum shortcode
-Version:      1.5.0
+Version:      1.0.0
 Author:       Norse Media
 Author URI:   https://norsemedia.dk/
 License:      GPL2
@@ -23,7 +23,7 @@ function lipsumator_shortcode_scripts() {
     global $post;
     $plugin_url = plugin_dir_url( __FILE__ );
     $options = get_option('lipsumator_options');
-    if ( isset($options['highlight'])  ) {
+    if ( isset($options['highlight']) && has_shortcode( $post->post_content, 'lipsum') ) {
         wp_enqueue_style( 'lipsumator', $plugin_url . 'css/highlight.css' );
     }
 }
